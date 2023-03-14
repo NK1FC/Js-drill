@@ -1,17 +1,23 @@
 const matches = require('../../matches');
 
-function countMatchesEachSeason(matches) {
+/**
+ * Counts the number of matches played per season.
+ * @param {Array} matches - An array of match objects, each with a `season` property.
+ * @returns {Object} - An object containing the total number of matches played per season.
+ */
+
+function countMatchesPerSeason(matches) {
     try {
-        let totalMatchesPlayedEachYear = matches.reduce((acc, match) => {
+        let totalMatchesPlayedPerYear = matches.reduce((acc, match) => {
             let season = match.season;
             acc[season] = (acc[season] || 0) + 1;
             return acc;
         }, {})
-        return totalMatchesPlayedEachYear
+        return totalMatchesPlayedPerYear
     } catch (err) {
         return {};
     } return {};
 }
 
 
-console.log(countMatchesEachSeason(matches));
+console.log(countMatchesPerSeason(matches));
