@@ -1,4 +1,8 @@
-const matches = require('../../matches');
+
+const { matchesData } = require('./csvreader'); // Importing Matches data
+const writeFile = require('./file-writer'); // Importing Function to write File
+const path = require('path');
+
 
 /**
  * Counts the number of matches played per season.
@@ -21,4 +25,15 @@ function countMatchesPerSeason(matches) {
 }
 
 
-console.log(countMatchesPerSeason(matches));
+// Executing the Code
+
+let OutputPath = path.resolve(__dirname, '..', 'public', '1-matches-per-year.json');
+
+matchesData.then((matches) => {
+
+    let totalMatchesPlayedPerYear = countMatchesPerSeason(matches);  // Counting the matches per year
+    console.log(totalMatchesPlayedPerYear);
+    writeFile(OutputPath, totalMatchesPlayedPerYear);  // Writing the output to a JSON file
+
+});
+
