@@ -1,5 +1,5 @@
-const { matchesData } = require('./csvreader'); // Importing Matches data
-const writeFile = require('./file-writer'); // Importing Function to write File
+const { matchesData } = require('./helpler-functions/csvreader'); // Importing Matches data
+const writeFile = require('./helpler-functions/file-writer'); // Importing Function to write File
 const path = require('path');
 
 
@@ -35,8 +35,8 @@ let OutputPath = path.resolve(__dirname, '..', 'public', '2-matches-Won-Per-Team
 
 matchesData.then((matches) => {
 
-    let gamesWonPerTeamPerYear = matchesWonPerTeamPerYear(matches);  // Counting matches won by each team for each season
-    console.log(gamesWonPerTeamPerYear); // Logging the output to the console
+    let gamesWonPerTeamPerYear = matchesWonPerTeamPerYear(matches);  
+    console.log(gamesWonPerTeamPerYear); 
     writeFile(OutputPath, gamesWonPerTeamPerYear);  // Writing the output to a JSON file
 
 });

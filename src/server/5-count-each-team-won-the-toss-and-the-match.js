@@ -1,5 +1,5 @@
-const { matchesData } = require('./csvreader'); // Importing Matches data
-const writeFile = require('./file-writer'); // Importing Function to write File
+const { matchesData } = require('./helpler-functions/csvreader'); // Importing Matches data
+const writeFile = require('./helpler-functions/file-writer'); // Importing Function to write File
 const path = require('path');
 
 /**

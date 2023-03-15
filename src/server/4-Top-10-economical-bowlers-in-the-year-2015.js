@@ -1,6 +1,6 @@
-const { matchesData, deliveriesData } = require('./csvreader'); // Importing Matches data and deliveries data
-const writeFile = require('./file-writer'); // Importing Function to write File
-const getMatchIdOfYear = require('./get-matchid-for-year');
+const { matchesData, deliveriesData } = require('./helpler-functions/csvreader'); // Importing Matches data and deliveries data
+const writeFile = require('./helpler-functions/file-writer'); // Importing Function to write File
+const getMatchIdOfYear = require('./helpler-functions/get-matchid-for-year');
 const selectTopsortObject = require('./sort-and-slice-object');
 const path = require('path');
 
@@ -48,6 +48,7 @@ function bowlersRunWithNumOfBalls(matchIdOfYear, deliveries) {
  * Returns an object containing the top 10 economical bowlers based on the runs and balls data for each bowler.
  * @param {Object} bowlersRunAndBalls - An object containing the count of runs and balls for each bowler.
  * @returns {Object} - An object containing the top 10 economical bowlers and their economy rate.
+ * @returns {}  An empty object if their is any error.
  */
 function topTenEconomicalBowler(bowlersRunAndBalls) {
     try {
@@ -74,7 +75,7 @@ Promise.all([matchesData, deliveriesData]).then(([matches, deliveries]) => {
     let matchIdOfYear = getMatchIdOfYear(matches, 2015);
     let bowlersRunAndBalls = bowlersRunWithNumOfBalls(matchIdOfYear, deliveries);
     let tenEconomicalBowler = topTenEconomicalBowler(bowlersRunAndBalls);
-    console.log(tenEconomicalBowler);// Logging the output to the console
+    console.log(tenEconomicalBowler);
     writeFile(OutputPath, tenEconomicalBowler);  // Writing the output to a JSON file    
 });
 

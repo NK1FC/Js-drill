@@ -1,6 +1,6 @@
-const { matchesData, deliveriesData } = require('./csvreader'); // Importing Matches data and deliveries data
-const writeFile = require('./file-writer'); // Importing Function to write File
-const getMatchIdOfYear = require('./get-matchid-for-year');
+const { matchesData, deliveriesData } = require('./helpler-functions/csvreader'); // Importing Matches data and deliveries data
+const writeFile = require('./helpler-functions/file-writer'); // Importing Function to write File
+const getMatchIdOfYear = require('./helpler-functions/get-matchid-for-year');
 const path = require('path');
 
 /**
@@ -36,9 +36,11 @@ function extraRunsConcededbyteams(matchIdOfYear, deliveries) {
 let OutputPath = path.resolve(__dirname, '..', 'public', '3-Extra-runs-conceded-per-team-in-the-year-2016.json');
 
 Promise.all([matchesData, deliveriesData]).then(([matches, deliveries]) => {
+
     let matchIdOfYear = getMatchIdOfYear(matches, 2016);
     let runsConcededbyteams = extraRunsConcededbyteams(matchIdOfYear, deliveries);
-    console.log(runsConcededbyteams);// Logging the output to the console
+    console.log(runsConcededbyteams);
     writeFile(OutputPath, runsConcededbyteams);  // Writing the output to a JSON file    
+
 })
 
