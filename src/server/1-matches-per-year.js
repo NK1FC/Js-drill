@@ -18,7 +18,7 @@ function countMatchesPerSeason(matches) {
             acc[season] = (acc[season] || 0) + 1;
             return acc;
         }, {})
-        return totalMatchesPlayedPerYear
+        return totalMatchesPlayedPerYear;
     } catch (err) {
         return {};
     }

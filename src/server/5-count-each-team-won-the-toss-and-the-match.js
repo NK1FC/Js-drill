@@ -2,7 +2,12 @@ const { matchesData } = require('./csvreader'); // Importing Matches data
 const writeFile = require('./file-writer'); // Importing Function to write File
 const path = require('path');
 
-
+/**
+ * Returns an object containing the count of matches won and also the toss by each team.
+ * @param {Array} matches - An array of match objects.
+ * @returns {Object} - An object containing the count of matches won by each team who won the toss.
+ * @returns {}  An empty object if their is any error.
+ */
 function countWonTossAndMatchPerTeam(matches) {
     try {
         let countWonTossAndMatchEachTeam = matches.reduce((acc, match) => {

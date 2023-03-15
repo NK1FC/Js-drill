@@ -9,6 +9,7 @@ const path = require('path');
  * @param {number} matchIdOfYear - The ID of the match to filter the deliveries by.
  * @param {Array} deliveries - An array of objects representing the deliveries data for all matches.
  * @returns {Object} - An object containing the count of balls and runs for each bowler in the given match.
+ * @returns {}  An empty object if their is any error.
  */
 function bowlersRunWithNumOfBalls(matchIdOfYear, deliveries) {
     try {
