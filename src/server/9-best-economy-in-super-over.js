@@ -1,21 +1,21 @@
-const { matchesData, deliveriesData } = require('./helpler-functions/csvreader'); // Importing Matches data and deliveries data
+const { deliveriesData } = require('./helpler-functions/csvreader'); // Importing Matches data and deliveries data
 const writeFile = require('./helpler-functions/file-writer'); // Importing Function to write File
-const getMatchIdOfYear = require('./helpler-functions/get-matchid-for-year');
 const selectTopsortObject = require('./helpler-functions/sort-and-slice-object');
 const path = require('path');
 
+
+
 /**
- * Returns an object containing the count of balls and runs for each bowler in a given match, based on the deliveries data.
- * @param {number} matchIdOfYear - The ID of the match to filter the deliveries by.
+ * Returns an object containing the count of balls and runs for each bowler, based on the deliveries data.
  * @param {Array} deliveries - An array of objects representing the deliveries data for all matches.
- * @returns {Object} - An object containing the count of balls and runs for each bowler in the given match.
+ * @returns {Object} - An object containing the count of balls and runs for each bowler.
  * @returns {}  An empty object if their is any error.
  */
-function bowlersRunWithNumOfBalls(matchIdOfYear, deliveries) {
+function superOverBowlersRunBalls(deliveries) {
     try {
-        let bowlersRunWithCountOfBalls = deliveries.reduce((acc, delivery) => {
-            let matchId = delivery.match_id;
-            if (matchIdOfYear.hasOwnProperty(matchId)) {
+        let bowlersRunBalls = deliveries.reduce((acc, delivery) => {
+            let superOver = delivery.is_super_over;
+            if (superOver === '1') {
                 let bowler = delivery.bowler;
                 let wide_runs = parseInt(delivery.wide_runs);
                 let total_runs = parseInt(delivery.total_runs);
@@ -33,10 +33,12 @@ function bowlersRunWithNumOfBalls(matchIdOfYear, deliveries) {
                 }
                 acc[bowler]['balls'] = (acc[bowler]['balls'] || 0) + balls;
                 acc[bowler]['runs'] = (acc[bowler]['runs'] || 0) + runs;
+
+                return acc;
             }
             return acc;
         }, {});
-        return bowlersRunWithCountOfBalls;
+        return bowlersRunBalls;
     } catch (err) {
         console.log(err);
         return {};
@@ -44,38 +46,44 @@ function bowlersRunWithNumOfBalls(matchIdOfYear, deliveries) {
 }
 
 
+
 /**
- * Returns an object containing the top 10 economical bowlers based on the runs and balls data for each bowler.
+ * Returns an object containing the top economical bowlers based on the runs and balls data for each bowler.
  * @param {Object} bowlersRunAndBalls - An object containing the count of runs and balls for each bowler.
- * @returns {Object} - An object containing the top 10 economical bowlers and their economy rate.
+ * @returns {Object} - An object containing the top economical bowlers and their economy rate.
  * @returns {}  An empty object if their is any error.
  */
-function topTenEconomicalBowler(bowlersRunAndBalls) {
+function topEconomicalBowlerOfSuperOver(bowlersRunAndBalls) {
     try {
         let bowlerList = Object.keys(bowlersRunAndBalls);
         let bowlerWithEconomy = bowlerList.reduce((acc, bowler) => {
             acc[bowler] = Math.round((bowlersRunAndBalls[bowler]['runs'] / bowlersRunAndBalls[bowler]['balls']) * 6 * 100) / 100;
-            return acc
+            return acc;
         }, {});
-        let tenEconomicalBowler = selectTopsortObject(bowlerWithEconomy, 10);
-        return tenEconomicalBowler
+        let topEconomicalBowlerinSuperOver = selectTopsortObject(bowlerWithEconomy, 1);
+        return topEconomicalBowlerinSuperOver;
     } catch (err) {
         console.log(err);
         return {};
     }
 }
+
+
+
 
 
 
 // Executing the Code
 
-let OutputPath = path.resolve(__dirname, '..', 'public', '4-Top-10-economical-bowlers-in-the-year-2015.json');
+let OutputPath = path.resolve(__dirname, '..', 'public', '9-best-economy-in-super-over.json');
 
-Promise.all([matchesData, deliveriesData]).then(([matches, deliveries]) => {
-    let matchIdOfYear = getMatchIdOfYear(matches, 2015);
-    let bowlersRunAndBalls = bowlersRunWithNumOfBalls(matchIdOfYear, deliveries);
-    let tenEconomicalBowler = topTenEconomicalBowler(bowlersRunAndBalls);
-    console.log(tenEconomicalBowler);
-    writeFile(OutputPath, tenEconomicalBowler);  // Writing the output to a JSON file    
+deliveriesData.then((deliveries) => {
+
+    let bowlersRunBalls = superOverBowlersRunBalls(deliveries);
+    let topEconomicalBowlerSuperOver = topEconomicalBowlerOfSuperOver(bowlersRunBalls);
+    console.log(topEconomicalBowlerSuperOver);
+    writeFile(OutputPath, topEconomicalBowlerSuperOver);  // Writing the output to a JSON file
+
 });
+
 
